@@ -7,10 +7,11 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -24,6 +25,10 @@ public class Article extends AuditingFields{
     private Long id;
 
     @Setter
+    @ManyToOne(optional = false)
+    private  UserAccount userAccount; // 유저 정보 (ID)
+
+    @Setter
     @Column(nullable = false)
     private String title; // 제목
     @Setter
@@ -35,7 +40,7 @@ public class Article extends AuditingFields{
 
     // Article 에 연동된 Comment 는 중복을 허용하지 않는다.
     @ToString.Exclude // 순환 참조가 생길 수 있으니 적용
-    @OrderBy("id") // 정렬
+    @OrderBy("createdAt DESC") // 정렬
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) // article 테이블로부터 온 거라는 것을 명시
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
@@ -45,15 +50,16 @@ public class Article extends AuditingFields{
     }
 
     // metadata(id, createdAt, createdBy, modifiedAt, modifiedBy) 는 자동으로 들어가야하니 일단 제외
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
     // private 로 생성자 막고, 팩토리 메서드로 생성자를 제공할 수 있도록 적용
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     // collection 에서 사용 시 list 에서 넣거나 중복, 정렬 등을 하면서 비교, 동등성 비교할 때 필요
