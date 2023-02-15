@@ -2,7 +2,7 @@ package com.ardevtech.board.service;
 
 import com.ardevtech.board.domain.Article;
 import com.ardevtech.board.domain.ArticleComment;
-import com.ardevtech.board.domain.ArticleCommentDto;
+import com.ardevtech.board.dto.ArticleCommentDto;
 import com.ardevtech.board.repository.ArticleCommentRepository;
 import com.ardevtech.board.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;

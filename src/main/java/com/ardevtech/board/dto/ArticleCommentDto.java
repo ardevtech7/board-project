@@ -1,41 +1,40 @@
 package com.ardevtech.board.dto;
 
 import com.ardevtech.board.domain.Article;
+import com.ardevtech.board.domain.ArticleComment;
+import com.ardevtech.board.domain.UserAccount;
 
 import java.time.LocalDateTime;
 
-public record ArticleDto (
+public record ArticleCommentDto(
         Long id,
-        UserAccountDto userAccountDto,
-        String title,
+        Long articleId,
+        UserAccount userAccount,
         String content,
-        String hashtag,
         LocalDateTime createdAt,
         String createdBy,
         LocalDateTime modifiedAt,
         String modifiedBy
 ) {
-    public static ArticleDto of (
+    public static ArticleCommentDto of (
             Long id,
-            UserAccountDto userAccountDto,
-            String title,
+            Long articleId,
+            UserAccount userAccount,
             String content,
-            String hashtag,
             LocalDateTime createdAt,
             String createdBy,
             LocalDateTime modifiedAt,
             String modifiedBy
-) {
-        return new ArticleDto(id, userAccountDto, title, content, hashtag, createdAt, createdBy, modifiedAt, modifiedBy);
+    ) {
+        return new ArticleCommentDto(id, articleId, userAccount, content, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
-    public static ArticleDto from(Article entity) {
-        return new ArticleDto(
+    public static ArticleCommentDto from (ArticleComment entity) {
+        return new ArticleCommentDto(
                 entity.getId(),
+                entity.getArticle().getId(),
                 UserAccountDto.from(entity.getUserAccount()),
-                entity.getTitle(),
                 entity.getContent(),
-                entity.getHashtag(),
                 entity.getCreatedAt(),
                 entity.getCreatedBy(),
                 entity.getModifiedAt(),
@@ -43,12 +42,12 @@ public record ArticleDto (
         );
     }
 
-    public Article toEntity() {
-        return Article.of(
+    public ArticleComment toEntity(Article entity) {
+        return ArticleComment.of(
+                entity,
                 userAccountDto.toEntity(),
-                title,
-                content,
-                hashtag
+                content
         );
     }
+
 }

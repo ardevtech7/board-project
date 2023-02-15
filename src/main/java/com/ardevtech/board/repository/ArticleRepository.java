@@ -4,6 +4,8 @@ import com.ardevtech.board.domain.Article;
 import com.ardevtech.board.domain.QArticle;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -15,6 +17,8 @@ public interface ArticleRepository extends
         JpaRepository<Article, Long>,
         QuerydslPredicateExecutor<Article>,
         QuerydslBinderCustomizer<QArticle> {
+
+    Page<Article> findByTitle(String title, Pageable pageable);
 
     // default 를 사용하는 이유는 repository layer 에서 직접 구현체를 만들지 않고,
     // spring data jpa 를 이용해서 인터페이스 기능을 사용해서 구현하기 때문이다.
