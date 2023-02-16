@@ -2,7 +2,6 @@ package com.ardevtech.board.dto.response;
 
 import com.ardevtech.board.dto.ArticleCommentDto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public record ArticleCommentResponse(

@@ -22,6 +22,7 @@ public class ArticleComment extends AuditingFields{
 
     @Setter
     @ManyToOne(optional = false) // 댓글 지워도 게시글은 존재해야하니 cascade 는 추가 안함
+    @JoinColumn(name = "userId")
     private Article article; // 게시글 (ID)
     @Setter
     @ManyToOne(optional = false)
