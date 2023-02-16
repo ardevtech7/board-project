@@ -1,4 +1,4 @@
-package com.ardevtech.board.config;
+package com.ardevtech.board.domain.constant;
 
 import lombok.Getter;
 
