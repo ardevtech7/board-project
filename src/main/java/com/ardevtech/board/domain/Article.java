@@ -67,11 +67,11 @@ public class Article extends AuditingFields{
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Article article))
+        if (!(o instanceof Article that))
             return false;
         // db 에 insert 전 엔티티는 아직 널이기 때문에 체크하는 코드로 변경
 //        return id.equals(article.id)
-        return id != null && id.equals(article.id);
+        return id != null && id.equals(that.getId());
     }
 
     @Override
