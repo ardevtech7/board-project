@@ -2,14 +2,13 @@ package com.ardevtech.board.dto;
 
 import com.ardevtech.board.domain.Article;
 import com.ardevtech.board.domain.ArticleComment;
-import com.ardevtech.board.domain.UserAccount;
 
 import java.time.LocalDateTime;
 
 public record ArticleCommentDto(
         Long id,
         Long articleId,
-        UserAccount userAccount,
+        UserAccountDto userAccountDto,
         String content,
         LocalDateTime createdAt,
         String createdBy,
@@ -19,14 +18,14 @@ public record ArticleCommentDto(
     public static ArticleCommentDto of (
             Long id,
             Long articleId,
-            UserAccount userAccount,
+            UserAccountDto userAccountDto,
             String content,
             LocalDateTime createdAt,
             String createdBy,
             LocalDateTime modifiedAt,
             String modifiedBy
     ) {
-        return new ArticleCommentDto(id, articleId, userAccount, content, createdAt, createdBy, modifiedAt, modifiedBy);
+        return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
     public static ArticleCommentDto from (ArticleComment entity) {

@@ -2,10 +2,11 @@ package com.ardevtech.board.service;
 
 import com.ardevtech.board.config.SearchType;
 import com.ardevtech.board.dto.ArticleDto;
-import com.ardevtech.board.dto.ArticleUpdateDto;
+import com.ardevtech.board.dto.ArticleWithCommentsDto;
 import com.ardevtech.board.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,12 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchType title, String search_keyword) {
+    public Page<ArticleDto> searchArticles(SearchType searchType, String keyword, Pageable pageable) {
         return Page.empty();
     }
 
     @Transactional(readOnly = true)
-    public ArticleDto searchArticle(long l) {
+    public ArticleWithCommentsDto getArticle(long articleId) {
         return null;
     }
 
@@ -29,7 +30,7 @@ public class ArticleService {
 
     }
 
-    public void updateArticle(long articleId, ArticleUpdateDto dto) {
+    public void updateArticle(ArticleDto dto) {
 
     }
 
