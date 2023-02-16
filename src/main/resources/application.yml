@@ -23,7 +23,8 @@ spring:
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
-#  h2.console.enabled: true
+    open-in-view: false
+  #  h2.console.enabled: true
   sql.init.mode: always
   data:
     rest:
