@@ -21,9 +21,11 @@ class JpaRepositoryTest {
     private final ArticleCommentRepository articleCommentRepository;
     private final UserAccountRepository userAccountRepository;
 
+    @Autowired
     public JpaRepositoryTest(
-            @Autowired ArticleRepository articleRepository,
-            @Autowired ArticleCommentRepository articleCommentRepository, UserAccountRepository userAccountRepository) {
+            ArticleRepository articleRepository,
+            ArticleCommentRepository articleCommentRepository,
+            UserAccountRepository userAccountRepository) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
         this.userAccountRepository = userAccountRepository;
@@ -48,7 +50,7 @@ class JpaRepositoryTest {
     void givenTestData_whenInserting_thenWorkingFine() {
         // Given
         long previousCount = articleRepository.count();
-        UserAccount userAccount = userAccountRepository.save(UserAccount.of("ardev", "pw", null, null, null));
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("newArdev", "pw", null, null, null));
         Article article = Article.of(userAccount, "new article", "new content", "#spring");
 
         // When
