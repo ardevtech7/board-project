@@ -55,7 +55,7 @@ public class ArticleService {
             if (dto.content() != null) {
                 article.setContent(dto.content());
             }
-            article.setHashtag(dto.hashtag());
+            article.setHashtag(dto.hashtag()); // title, content 는 notnull
         } catch (EntityNotFoundException e) {
             log.warn("게시글 없데이트 실패. 게시글을 찾을 수 없습니다 - dto: {}", dto);
         }
