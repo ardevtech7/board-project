@@ -14,12 +14,14 @@ public record ArticleResponse(
         String nickname
 ) {
     public static ArticleResponse of(
-            Long id, String content,
+            Long id,
+            String title,
+            String content,
             String hashtag,
             LocalDateTime createdAt,
             String email,
             String nickname) {
-        return new ArticleResponse(id, content, hashtag, content, createdAt, email, nickname);
+        return new ArticleResponse(id, title, content, hashtag, createdAt, email, nickname);
     }
 
     public static ArticleResponse from(ArticleDto dto) {

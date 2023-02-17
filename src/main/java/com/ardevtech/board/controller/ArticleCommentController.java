@@ -1,7 +1,7 @@
 package com.ardevtech.board.controller;
 
 import com.ardevtech.board.dto.request.ArticleCommentRequest;
-import com.ardevtech.board.dto.request.BoardPrincipal;
+import com.ardevtech.board.dto.security.BoardPrincipal;
 import com.ardevtech.board.service.ArticleCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

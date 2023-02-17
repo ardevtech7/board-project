@@ -1,7 +1,7 @@
 package com.ardevtech.board.config;
 
 import com.ardevtech.board.dto.UserAccountDto;
-import com.ardevtech.board.dto.request.BoardPrincipal;
+import com.ardevtech.board.dto.security.BoardPrincipal;
 import com.ardevtech.board.repository.UserAccountRepository;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

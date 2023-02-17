@@ -3,9 +3,9 @@ package com.ardevtech.board.controller;
 import com.ardevtech.board.domain.constant.FormStatus;
 import com.ardevtech.board.domain.constant.SearchType;
 import com.ardevtech.board.dto.request.ArticleRequest;
-import com.ardevtech.board.dto.request.BoardPrincipal;
 import com.ardevtech.board.dto.response.ArticleResponse;
 import com.ardevtech.board.dto.response.ArticleWithCommentsResponse;
+import com.ardevtech.board.dto.security.BoardPrincipal;
 import com.ardevtech.board.service.ArticleService;
 import com.ardevtech.board.service.PaginationService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,7 @@ import java.util.List;
 @RequestMapping("/articles")
 @Controller
 public class ArticleController {
+
     private final ArticleService articleService;
     private final PaginationService paginationService;
 
@@ -44,11 +45,8 @@ public class ArticleController {
         return "articles/index";
     }
 
-    @GetMapping("{articleId}")
-    public String article(
-            @PathVariable Long articleId,
-            ModelMap map
-    ) {
+    @GetMapping("/{articleId}")
+    public String article(@PathVariable Long articleId, ModelMap map) {
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         map.addAttribute("article", article);
@@ -77,14 +75,14 @@ public class ArticleController {
     }
 
     @GetMapping("/form")
-    private String articleForm(ModelMap map) {
+    public String articleForm(ModelMap map) {
         map.addAttribute("formStatus", FormStatus.CREATE);
 
         return "articles/form";
     }
 
-    @PostMapping("/form")
-    private String postNewArticle(
+    @PostMapping ("/form")
+    public String postNewArticle(
             @AuthenticationPrincipal BoardPrincipal boardPrincipal,
             ArticleRequest articleRequest
     ) {
@@ -94,10 +92,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}/form")
-    private String updateArticleForm(
-            @PathVariable Long articleId,
-            ModelMap map
-    ) {
+    public String updateArticleForm(@PathVariable Long articleId, ModelMap map) {
         ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
 
         map.addAttribute("article", article);
@@ -106,7 +101,7 @@ public class ArticleController {
         return "articles/form";
     }
 
-    @PostMapping("/{articleId}/form")
+    @PostMapping ("/{articleId}/form")
     public String updateArticle(
             @PathVariable Long articleId,
             @AuthenticationPrincipal BoardPrincipal boardPrincipal,
@@ -117,8 +112,8 @@ public class ArticleController {
         return "redirect:/articles/" + articleId;
     }
 
-    @PostMapping("/{articleId}/delete")
-    private String deleteArticle(
+    @PostMapping ("/{articleId}/delete")
+    public String deleteArticle(
             @PathVariable Long articleId,
             @AuthenticationPrincipal BoardPrincipal boardPrincipal
     ) {
@@ -128,3 +123,4 @@ public class ArticleController {
     }
 
 }
+

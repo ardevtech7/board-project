@@ -1,6 +1,5 @@
 package com.ardevtech.board.controller;
 
-import com.ardevtech.board.config.SecurityConfig;
 import com.ardevtech.board.config.TestSecurityConfig;
 import com.ardevtech.board.service.ArticleService;
 import com.ardevtech.board.service.PaginationService;

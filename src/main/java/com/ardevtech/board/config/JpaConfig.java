@@ -1,6 +1,6 @@
 package com.ardevtech.board.config;
 
-import com.ardevtech.board.dto.request.BoardPrincipal;
+import com.ardevtech.board.dto.security.BoardPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

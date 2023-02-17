@@ -1,4 +1,4 @@
-package com.ardevtech.board.dto.request;
+package com.ardevtech.board.dto.security;
 
 import com.ardevtech.board.dto.UserAccountDto;
 import lombok.Getter;
@@ -42,17 +42,6 @@ public record BoardPrincipal(
         );
     }
 
-    public enum RoleType {
-        USER("ROLE_USER");
-
-        @Getter
-        private final String name;
-
-        RoleType(String name) {
-            this.name = name;
-        }
-    }
-
     public static BoardPrincipal from(UserAccountDto dto) {
         return BoardPrincipal.of(
                 dto.userId(),
@@ -74,11 +63,6 @@ public record BoardPrincipal(
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
     public String getPassword() {
         return password;
     }
@@ -86,6 +70,11 @@ public record BoardPrincipal(
     @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
@@ -106,5 +95,16 @@ public record BoardPrincipal(
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public enum RoleType {
+        USER("ROLE_USER");
+
+        @Getter
+        private final String name;
+
+        RoleType(String name) {
+            this.name = name;
+        }
     }
 }

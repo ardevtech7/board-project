@@ -18,14 +18,15 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class AuditingFields {
+public abstract class AuditingFields {
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt; // 생성일시
 
     @CreatedBy
-    @Column(nullable = false, length = 100, updatable = false)
+    @Column(nullable = false, updatable = false, length = 100)
     private String createdBy; // 생성자
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -36,4 +37,5 @@ public class AuditingFields {
     @LastModifiedBy
     @Column(nullable = false, length = 100)
     private String modifiedBy; // 수정자
+
 }
