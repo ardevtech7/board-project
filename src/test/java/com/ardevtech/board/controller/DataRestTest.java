@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,10 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
-public class DataRestTest {
+class DataRestTest {
     private final MockMvc mvc;
 
-    public DataRestTest(@Autowired MockMvc mvc) {
+    DataRestTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
 
@@ -81,17 +81,17 @@ public class DataRestTest {
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")));
     }
 
-//    @DisplayName("[API] 회원 관련 API 는 일체 제공하지 않는다.")
-//    @Test
-//    void givenNothing_whenRequestingUserAccounts_thenThrowException() throws Exception {
-//        // Given
-//
-//        // When & Then
-//        mvc.perform(get("/api/userAccounts")).andExpect(status().isNotFound());
-//        mvc.perform(post("/api/userAccounts")).andExpect(status().isNotFound());
-//        mvc.perform(put("/api/userAccounts")).andExpect(status().isNotFound());
-//        mvc.perform(patch("/api/userAccounts")).andExpect(status().isNotFound());
-//        mvc.perform(delete("/api/userAccounts")).andExpect(status().isNotFound());
-//        mvc.perform(head("/api/userAccounts")).andExpect(status().isNotFound());
-//    }
+    @DisplayName("[API] 회원 관련 API 는 일체 제공하지 않는다.")
+    @Test
+    void givenNothing_whenRequestingUserAccounts_thenThrowException() throws Exception {
+        // Given
+
+        // When & Then
+        mvc.perform(get("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(post("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(put("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(patch("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(delete("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(head("/api/userAccounts")).andExpect(status().isNotFound());
+    }
 }
