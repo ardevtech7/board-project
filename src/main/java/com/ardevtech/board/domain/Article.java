@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,7 +14,6 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
-        @Index(columnList = "hashtag"),
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
@@ -35,8 +35,16 @@ public class Article extends AuditingFields{
     @Column(nullable = false, length = 10000)
     private String content; // 본문
 
-    @Setter
-    private String hashtag;
+    @ToString.Exclude
+    @JoinTable(
+            name = "article_hashtag",
+            // 주인 역할 필드에 JoinTable 설정
+            joinColumns = @JoinColumn(name = "articleId"),
+            inverseJoinColumns = @JoinColumn(name = "hashtagId")
+    )
+    // update, insert 변경이 있을 때, hashtag 에서도 동기화
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Hashtag> hashtags = new LinkedHashSet<>();
 
     // Article 에 연동된 Comment 는 중복을 허용하지 않는다.
     @ToString.Exclude // 순환 참조가 생길 수 있으니 적용
@@ -45,21 +53,30 @@ public class Article extends AuditingFields{
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     // 모든 JPA Entity 는 기본 생성자 필수. private X
-    protected Article() {
-
-    }
+    protected Article() {}
 
     // metadata(id, createdAt, createdBy, modifiedAt, modifiedBy) 는 자동으로 들어가야하니 일단 제외
-    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content) {
         this.userAccount = userAccount;
         this.title = title;
         this.content = content;
-        this.hashtag = hashtag;
     }
 
     // private 로 생성자 막고, 팩토리 메서드로 생성자를 제공할 수 있도록 적용
-    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
-        return new Article(userAccount, title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content) {
+        return new Article(userAccount, title, content);
+    }
+
+    public void addHashtag(Hashtag hashtag) {
+        this.getHashtags().add(hashtag);
+    }
+
+    public void addHashtags(Collection<Hashtag> hashtags) {
+        this.getHashtags().addAll(hashtags);
+    }
+
+    public void clearHashtags() {
+        this.getHashtags().clear();
     }
 
     // collection 에서 사용 시 list 에서 넣거나 중복, 정렬 등을 하면서 비교, 동등성 비교할 때 필요
