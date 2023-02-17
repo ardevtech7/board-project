@@ -20,6 +20,7 @@ public record BoardPrincipal(
 ) implements UserDetails {
 
     // 처음 인증이 통과될 때, 생성자에서 RoleType 이 만들어짐
+    // 지금은 인증만 하고 권한을 다루고 있지 않아서 임의로 셋팅한다.
     public static BoardPrincipal of(
             String username,
             String password,
