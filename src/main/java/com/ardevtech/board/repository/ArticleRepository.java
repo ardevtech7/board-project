@@ -26,6 +26,7 @@ public interface ArticleRepository extends
     Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
     Page<Article> findByHashtag(String hashtag, Pageable pageable);
 
+    void deleteByIdAndUserAccount_UserId(Long articleId, String userid);
 
     // default 를 사용하는 이유는 repository layer 에서 직접 구현체를 만들지 않고,
     // spring data jpa 를 이용해서 인터페이스 기능을 사용해서 구현하기 때문이다.

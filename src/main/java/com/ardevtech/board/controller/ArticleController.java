@@ -2,8 +2,8 @@ package com.ardevtech.board.controller;
 
 import com.ardevtech.board.domain.constant.FormStatus;
 import com.ardevtech.board.domain.constant.SearchType;
-import com.ardevtech.board.dto.UserAccountDto;
 import com.ardevtech.board.dto.request.ArticleRequest;
+import com.ardevtech.board.dto.request.BoardPrincipal;
 import com.ardevtech.board.dto.response.ArticleResponse;
 import com.ardevtech.board.dto.response.ArticleWithCommentsResponse;
 import com.ardevtech.board.service.ArticleService;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +45,16 @@ public class ArticleController {
     }
 
     @GetMapping("{articleId}")
-    public String article(@PathVariable Long articleId, ModelMap map) {
+    public String article(
+            @PathVariable Long articleId,
+            ModelMap map
+    ) {
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
         map.addAttribute("totalCount", articleService.getArticleCount());
+
         return "articles/detail";
     }
 
@@ -57,8 +62,8 @@ public class ArticleController {
     public String searchArticleHashtag(
             @RequestParam(required = false) String searchValue,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            ModelMap map)
-    {
+            ModelMap map
+    ) {
         Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
         List<String> hashtags = articleService.getHashtags();
@@ -74,22 +79,25 @@ public class ArticleController {
     @GetMapping("/form")
     private String articleForm(ModelMap map) {
         map.addAttribute("formStatus", FormStatus.CREATE);
+
         return "articles/form";
     }
 
     @PostMapping("/form")
-    private String postNewArticle(ArticleRequest articleRequest) {
-        // TODO : 인증 정보 추가 예정
-        articleService.saveArticle(articleRequest.toDto(UserAccountDto.of(
-                "ardev", "ardev1234", "asdev@mail.com", "Ardev", "memo",
-                null, null, null, null
-        )));
+    private String postNewArticle(
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
+            ArticleRequest articleRequest
+    ) {
+        articleService.saveArticle(articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles";
     }
 
     @GetMapping("/{articleId}/form")
-    private String updateArticleForm(@PathVariable Long articleId, ModelMap map) {
+    private String updateArticleForm(
+            @PathVariable Long articleId,
+            ModelMap map
+    ) {
         ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
 
         map.addAttribute("article", article);
@@ -99,19 +107,24 @@ public class ArticleController {
     }
 
     @PostMapping("/{articleId}/form")
-    public String updateArticle(@PathVariable Long articleId, ArticleRequest articleRequest) {
-        // TODO : 인증 정보 추가 예정
-        articleService.updateArticle(articleId, articleRequest.toDto(UserAccountDto.of(
-                "ardev", "ardev1234", "asdev@mail.com", "Ardev", "memo")));
+    public String updateArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
+            ArticleRequest articleRequest
+    ) {
+        articleService.updateArticle(articleId, articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles/" + articleId;
     }
 
     @PostMapping("/{articleId}/delete")
-    private String deleteArticle(@PathVariable Long articleId) {
-        // TODO : 인증 정보 추가 예정
-        articleService.deleteArticle(articleId);
+    private String deleteArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal
+    ) {
+        articleService.deleteArticle(articleId, boardPrincipal.getUsername());
 
         return "redirect:/articles";
     }
+
 }
