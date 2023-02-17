@@ -1,7 +1,6 @@
 package com.ardevtech.board.service;
 
 import com.ardevtech.board.domain.Article;
-import com.ardevtech.board.domain.ArticleComment;
 import com.ardevtech.board.domain.UserAccount;
 import com.ardevtech.board.dto.ArticleCommentDto;
 import com.ardevtech.board.repository.ArticleCommentRepository;
@@ -41,21 +40,6 @@ public class ArticleCommentService {
             log.warn("댓글 저장 실패. 댓글 작성에 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
         }
 
-    }
-
-    /**
-     * @deprecated 댓글 수정 기능은 클라이언트에서 생각할 점이 많아지기 때문에 이번 개발에서는 제공하지 않는다.
-     */
-    @Deprecated
-    public void updateArticleComment(ArticleCommentDto dto) {
-        try {
-            ArticleComment articleComment = articleCommentRepository.getReferenceById(dto.id());
-            if (dto.content() != null) {
-                articleComment.setContent(dto.content());
-            }
-        } catch (EntityNotFoundException e) {
-            log.warn("댓글 업데이트 실패. 댓글을 찾을 수 없습니다 - dto: {}", dto);
-        }
     }
 
     public void deleteArticleComment(Long articleCommentId, String userId) {

@@ -89,41 +89,6 @@ class ArticleCommentServiceTest {
         then(userAccountRepository).shouldHaveNoInteractions();
         then(articleCommentRepository).shouldHaveNoInteractions();
     }
-
-    @DisplayName("댓글 정보를 입력하면, 댓글을 수정한다.")
-    @Test
-    void givenArticleCommentInfo_whenUpdatingArticleComment_thenUpdatesArticleComment() {
-        // Given
-        String oldContent = "content";
-        String updateContent = "댓글";
-        ArticleComment articleComment = createArticleComment(oldContent);
-        ArticleCommentDto dto = createArticleCommentDto(updateContent);
-        given(articleCommentRepository.getReferenceById(dto.id())).willReturn(articleComment);
-
-        // When
-        sut.updateArticleComment(dto);
-
-        // Then
-        assertThat(articleComment.getContent())
-                .isNotEqualTo(oldContent)
-                .isEqualTo(updateContent);
-        then(articleCommentRepository).should().getReferenceById(dto.id());
-    }
-
-    @DisplayName("없는 댓글을 수정하려고 하면, 경고 로그를 찍고 아무것도 안 한다.")
-    @Test
-    void givenNoneExistentArticle_whenUpdatingArticleComment_thenLogsSituationAndDoesNothing() {
-        // Given
-        ArticleCommentDto dto = createArticleCommentDto("댓글");
-        given(articleCommentRepository.getReferenceById(dto.id())).willThrow(EntityNotFoundException.class);
-
-        // When
-        sut.updateArticleComment(dto);
-
-        // Then
-        then(articleCommentRepository).should().getReferenceById(dto.id());
-    }
-
     @DisplayName("댓글 ID를 입력하면, 댓글을 삭제한다.")
     @Test
     void givenArticleCommentId_whenDeletingArticleComment_thenDeletesArticleComment() {
@@ -138,8 +103,6 @@ class ArticleCommentServiceTest {
         // Then
         then(articleCommentRepository).should().deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
-
-
 
     private ArticleCommentDto createArticleCommentDto(String content) {
         return ArticleCommentDto.of(
