@@ -71,11 +71,11 @@ public class Article extends AuditingFields{
             return false;
         // db 에 insert 전 엔티티는 아직 널이기 때문에 체크하는 코드로 변경
 //        return id.equals(article.id)
-        return id != null && id.equals(that.getId());
+        return this.getId() != null && this.getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.getId());
     }
 }
