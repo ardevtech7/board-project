@@ -47,7 +47,7 @@ public class UserAccount extends AuditingFields{
 
     // 팩토리 메서드를 통해서 접근
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo) {
-        return new UserAccount(userId, userPassword, email, nickname, memo, null);
+        return UserAccount.of(userId, userPassword, email, nickname, memo, null);
     }
 
     // 인증 정보가 없을 때 사용
