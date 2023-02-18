@@ -1,6 +1,7 @@
 package com.ardevtech.board.service;
 
 import com.ardevtech.board.domain.Article;
+import com.ardevtech.board.domain.ArticleComment;
 import com.ardevtech.board.domain.UserAccount;
 import com.ardevtech.board.dto.ArticleCommentDto;
 import com.ardevtech.board.repository.ArticleCommentRepository;
@@ -35,11 +36,18 @@ public class ArticleCommentService {
         try {
             Article article = articleRepository.getReferenceById(dto.articleId());
             UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
-            articleCommentRepository.save(dto.toEntity(article, userAccount));
+            ArticleComment articleComment = dto.toEntity(article, userAccount);
+
+            // 부모 댓글이 있을 경우,
+            if (dto.parentCommentId() != null) {
+                ArticleComment parentComment = articleCommentRepository.getReferenceById(dto.parentCommentId());
+                parentComment.addChildComment(articleComment);
+            } else {
+                articleCommentRepository.save(articleComment);
+            }
         } catch (EntityNotFoundException e) {
             log.warn("댓글 저장 실패. 댓글 작성에 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
         }
-
     }
 
     public void deleteArticleComment(Long articleCommentId, String userId) {

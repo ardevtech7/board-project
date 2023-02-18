@@ -31,7 +31,16 @@ public record ArticleWithCommentsDto(
             LocalDateTime modifiedAt,
             String modifiedBy
     ) {
-        return new ArticleWithCommentsDto(id, userAccountDto, articleCommentDtos, title, content, hashtagDtos, createdAt, createdBy, modifiedAt, modifiedBy);
+        return new ArticleWithCommentsDto(
+                id,
+                userAccountDto,
+                articleCommentDtos,
+                title, content,
+                hashtagDtos,
+                createdAt,
+                createdBy,
+                modifiedAt,
+                modifiedBy);
     }
 
     public static ArticleWithCommentsDto from(Article entity) {
