@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes ={
         @Index(columnList = "email", unique = true),
         @Index(columnList = "createdAt"),
@@ -33,19 +33,26 @@ public class UserAccount extends AuditingFields{
     @Setter
     private String memo;
 
-    protected UserAccount() {
-    }
+    protected UserAccount() {}
 
-    private UserAccount(String userId, String userPassword, String email, String nickname, String memo) {
+    private UserAccount(String userId, String userPassword, String email, String nickname, String memo, String createdBy) {
         this.userId = userId;
         this.userPassword = userPassword;
         this.email = email;
         this.nickname = nickname;
         this.memo = memo;
+        this.createdBy = createdBy;
+        this.modifiedBy = createdBy; // insert 하는 시점에 생성자와 수정자는 같은 사람
     }
 
+    // 팩토리 메서드를 통해서 접근
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo) {
-        return new UserAccount(userId, userPassword, email, nickname, memo);
+        return new UserAccount(userId, userPassword, email, nickname, memo, null);
+    }
+
+    // 인증 정보가 없을 때 사용
+    public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo, String createdBy) {
+        return new UserAccount(userId, userPassword, email, nickname, memo, null);
     }
 
     @Override
@@ -61,4 +68,5 @@ public class UserAccount extends AuditingFields{
     public int hashCode() {
         return Objects.hash(this.getUserId());
     }
+
 }

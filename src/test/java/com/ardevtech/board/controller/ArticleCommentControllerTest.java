@@ -5,7 +5,6 @@ import com.ardevtech.board.dto.ArticleCommentDto;
 import com.ardevtech.board.dto.request.ArticleCommentRequest;
 import com.ardevtech.board.service.ArticleCommentService;
 import com.ardevtech.board.util.FormDataEncoder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
