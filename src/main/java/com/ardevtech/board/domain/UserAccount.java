@@ -52,7 +52,7 @@ public class UserAccount extends AuditingFields{
 
     // 인증 정보가 없을 때 사용
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo, String createdBy) {
-        return new UserAccount(userId, userPassword, email, nickname, memo, null);
+        return new UserAccount(userId, userPassword, email, nickname, memo, createdBy);
     }
 
     @Override
