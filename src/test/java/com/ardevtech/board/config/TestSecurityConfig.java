@@ -1,7 +1,7 @@
 package com.ardevtech.board.config;
 
-import com.ardevtech.board.domain.UserAccount;
-import com.ardevtech.board.repository.UserAccountRepository;
+import com.ardevtech.board.dto.UserAccountDto;
+import com.ardevtech.board.service.UserAccountService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.event.annotation.BeforeTestMethod;
@@ -14,16 +14,23 @@ import static org.mockito.BDDMockito.given;
 @Import(SecurityConfig.class)
 public class TestSecurityConfig {
     @MockBean
-    private UserAccountRepository userAccountRepository;
+    private UserAccountService userAccountService;
 
     @BeforeTestMethod
     public void securitySetUp() {
-        given(userAccountRepository.findById(anyString())).willReturn(Optional.of(UserAccount.of(
+        given(userAccountService.searchUser(anyString()))
+                .willReturn(Optional.of(createUserAccountDto()));
+        given(userAccountService.saveUser(anyString(),anyString(),anyString(),anyString(),anyString()))
+                .willReturn(createUserAccountDto());
+    }
+
+    private UserAccountDto createUserAccountDto() {
+        return UserAccountDto.of(
                 "ardevTest",
                 "pw",
                 "ardev@email.com",
                 "ardev-test",
                 "memo"
-        )));
+        );
     }
 }
