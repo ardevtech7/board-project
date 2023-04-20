@@ -6,7 +6,9 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
     ('ardev2', '{noop}asdf1234', 'ardev2', 'ardev2@mail.com', 'I am ardev2.', now(), 'ardev2', now(), 'ardev2')
 ;
-
+insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
+    ('ardev3', '{noop}asdf1234', 'ardev3', 'ardev3@mail.com', 'I am ardev3.', now(), 'ardev3', now(), 'ardev3')
+;
 -- 123 게시글
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at) values
                                                                                                     ('ardev2', 'Quisque ut erat.', 'Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.
