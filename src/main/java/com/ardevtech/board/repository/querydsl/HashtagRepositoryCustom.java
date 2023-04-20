@@ -1,4 +1,4 @@
-package com.ardevtech.board.repository;
+package com.ardevtech.board.repository.querydsl;
 
 import java.util.List;
 

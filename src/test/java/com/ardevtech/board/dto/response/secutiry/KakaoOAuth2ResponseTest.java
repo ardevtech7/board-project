@@ -1,5 +1,6 @@
-package com.ardevtech.board.dto.response;
+package com.ardevtech.board.dto.response.secutiry;
 
+import com.ardevtech.board.dto.response.KakaoOAuth2Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
