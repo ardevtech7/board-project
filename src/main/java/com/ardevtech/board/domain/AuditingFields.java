@@ -23,19 +23,19 @@ public abstract class AuditingFields {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    protected LocalDateTime createdAt; // 생성일시
+    protected LocalDateTime createdAt;
 
     @CreatedBy
     @Column(nullable = false, updatable = false, length = 100)
-    protected String createdBy; // 생성자, 인증 정보로부터 오는 것
+    protected String createdBy;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedDate
     @Column(nullable = false)
-    protected LocalDateTime modifiedAt; // 수정일시
+    protected LocalDateTime modifiedAt;
 
     @LastModifiedBy
     @Column(nullable = false, length = 100)
-    protected String modifiedBy; // 수정자, 인증 정보로부터 오는 것
+    protected String modifiedBy;
 
 }

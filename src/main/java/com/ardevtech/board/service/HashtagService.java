@@ -27,20 +27,20 @@ public class HashtagService {
         }
 
         Pattern pattern = Pattern.compile("#[\\w가-힣]+");
-        Matcher matcher = pattern.matcher(content.strip()); // 앞 뒤 공백 문자 제거
+        Matcher matcher = pattern.matcher(content.strip());
         Set<String> result = new HashSet<>();
 
-        while (matcher.find()) { // 정규식에 맞는 문자가 발견되면, # 을 제
+        while (matcher.find()) {
             result.add(matcher.group().replace("#", ""));
         }
-        return Set.copyOf(result); // 불변객체
+        return Set.copyOf(result);
     }
 
     public void deleteHashtagWithoutArticles(Long hashtagId) {
-        // 게시글이 지워졌을 때 관련 해시태그가 지워지면 안되니, 게시글이 없으면 삭제 가능하게 변경
         Hashtag hashtag = hashtagRepository.getReferenceById(hashtagId);
         if (hashtag.getArticles().isEmpty()) {
             hashtagRepository.delete(hashtag);
         }
     }
+
 }

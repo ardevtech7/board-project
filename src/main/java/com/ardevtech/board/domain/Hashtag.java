@@ -53,4 +53,5 @@ public class Hashtag extends AuditingFields{
     public int hashCode() {
         return Objects.hash(this.getId());
     }
+
 }

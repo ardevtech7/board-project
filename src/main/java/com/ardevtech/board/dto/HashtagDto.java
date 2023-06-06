@@ -41,4 +41,5 @@ public record HashtagDto(
     public Hashtag toEntity() {
         return Hashtag.of(hashtagName);
     }
+
 }

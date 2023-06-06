@@ -66,19 +66,15 @@ public record ArticleWithCommentsResponse(
         );
     }
 
-    // 댓글과 대댓글이 구분되어 있지 않은 테이블 순환
-    // 대댓글이면 부모 아이디 있고, 댓글이면 부모 아이디 없으니 루트 아이디 확보
     private static Set<ArticleCommentResponse> organizeChildComments(Set<ArticleCommentDto> dtos) {
         Map<Long, ArticleCommentResponse> map = dtos.stream()
                 .map(ArticleCommentResponse::from)
                 .collect(Collectors.toMap(ArticleCommentResponse::id, Function.identity()));
 
         map.values().stream()
-                .filter(ArticleCommentResponse::hasParentComment) // 부모 댓글이 있으면 자식 댓글
-                .forEach(comment -> { // 자식 댓글만 필터링
-                    // 부모 댓글 꺼내기
+                .filter(ArticleCommentResponse::hasParentComment)
+                .forEach(comment -> {
                     ArticleCommentResponse parentComment = map.get(comment.parentCommentId());
-                    // 부모 댓글에서 자식 댓글 꺼내서 저장
                     parentComment.childComments().add(comment);
                 });
 
@@ -91,4 +87,5 @@ public record ArticleWithCommentsResponse(
                             .thenComparingLong(ArticleCommentResponse::id)
                     )));
     }
+
 }

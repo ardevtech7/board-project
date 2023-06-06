@@ -39,4 +39,5 @@ public record HashtagWithArticlesDto(
     public Hashtag toEntity() {
         return Hashtag.of(hashtagName);
     }
+
 }

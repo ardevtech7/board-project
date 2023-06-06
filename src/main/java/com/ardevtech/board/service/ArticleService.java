@@ -85,7 +85,6 @@ public class ArticleService {
                     article.setContent(dto.content());
                 }
 
-                // 해시태그 가져와서 전체 지우고, 다시 새로운 해시태그로 업데이트
                 Set<Long> hashtagIds = article.getHashtags().stream()
                         .map(Hashtag::getId)
                         .collect(Collectors.toUnmodifiableSet());
@@ -112,7 +111,6 @@ public class ArticleService {
         articleRepository.deleteByIdAndUserAccount_UserId(articleId, userId);
         articleRepository.flush();
 
-        // 게시글이 없는 해시태그 삭제
         hashtagId.forEach(hashtagService::deleteHashtagWithoutArticles);
     }
 
@@ -134,13 +132,11 @@ public class ArticleService {
     }
 
     private Set<Hashtag> renewHashtagsFromContent(String content) {
-        // 본문에 있는 해시태그
         Set<String> hashtagNamesInContent = hashtagService.parseHashtagNames(content);
-        // DB 에 있는 해시태그
         Set<Hashtag> hashtags = hashtagService.findHashtagsByNames(hashtagNamesInContent);
         Set<String> existingHashtagNames = hashtags.stream()
                 .map(Hashtag::getHashtagName)
-                .collect(Collectors.toUnmodifiableSet()); // 불변 set
+                .collect(Collectors.toUnmodifiableSet());
 
         hashtagNamesInContent.forEach(newHashtagName -> {
             if (!existingHashtagNames.contains(newHashtagName)) {
@@ -149,4 +145,5 @@ public class ArticleService {
         });
         return hashtags;
     }
+
 }

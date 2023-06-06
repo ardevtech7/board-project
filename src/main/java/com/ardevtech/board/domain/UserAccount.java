@@ -42,15 +42,13 @@ public class UserAccount extends AuditingFields{
         this.nickname = nickname;
         this.memo = memo;
         this.createdBy = createdBy;
-        this.modifiedBy = createdBy; // insert 하는 시점에 생성자와 수정자는 같은 사람
+        this.modifiedBy = createdBy;
     }
 
-    // 팩토리 메서드를 통해서 접근
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo) {
         return UserAccount.of(userId, userPassword, email, nickname, memo, null);
     }
 
-    // 인증 정보가 없을 때 사용
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo, String createdBy) {
         return new UserAccount(userId, userPassword, email, nickname, memo, createdBy);
     }

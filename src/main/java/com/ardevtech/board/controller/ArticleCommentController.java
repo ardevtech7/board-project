@@ -34,4 +34,5 @@ public class ArticleCommentController {
         articleCommentService.deleteArticleComment(commentId, boardPrincipal.getUsername());
         return "redirect:/articles/" + articleId;
     }
+
 }

@@ -28,11 +28,9 @@ public interface ArticleRepository extends
 
     void deleteByIdAndUserAccount_UserId(Long articleId, String userid);
 
-    // default 를 사용하는 이유는 repository layer 에서 직접 구현체를 만들지 않고,
-    // spring data jpa 를 이용해서 인터페이스 기능을 사용해서 구현하기 때문이다.
     @Override
-    default void customize(QuerydslBindings bindings, QArticle root) { // 검색 기능 추가
-        bindings.excludeUnlistedProperties(true); // 모든 검색이 다 열려있으니 제외 추가
+    default void customize(QuerydslBindings bindings, QArticle root) {
+        bindings.excludeUnlistedProperties(true);
         bindings.including(root.title, root.content, root.hashtags, root.createdAt, root.createdBy);
         // 검색 파라미터 하나 적용, 대소문자 구분 제외, like '%{v}%'
         bindings.bind(root.title).first(StringExpression::containsIgnoreCase);

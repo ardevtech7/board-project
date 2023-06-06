@@ -13,7 +13,6 @@ public class DataRestConfig {
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {
         return RepositoryRestConfigurer.withConfig((config, cors) ->
-                // 아래 설정된 정보는 ID 정보 노출 -> API 에 공개한다는 것
                 config
                         .exposeIdsFor(UserAccount.class)
                         .exposeIdsFor(Article.class)
@@ -21,4 +20,5 @@ public class DataRestConfig {
                         .exposeIdsFor(Hashtag.class)
         );
     }
+
 }

@@ -16,7 +16,6 @@ public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
 
-    // entity 정보는 service 밖으로 나가지 않게 dto 로 반환
     @Transactional(readOnly = true)
     public Optional<UserAccountDto> searchUser(String username) {
         return userAccountRepository.findById(username)
@@ -31,8 +30,8 @@ public class UserAccountService {
             String memo
     ) {
         return UserAccountDto.from(
-                // entity -> dto
                 userAccountRepository.save(UserAccount.of(username, password, email, nickname, memo, username))
         );
     }
+
 }

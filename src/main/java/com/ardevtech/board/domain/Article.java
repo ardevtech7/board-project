@@ -38,31 +38,25 @@ public class Article extends AuditingFields{
     @ToString.Exclude
     @JoinTable(
             name = "article_hashtag",
-            // 주인 역할 필드에 JoinTable 설정
             joinColumns = @JoinColumn(name = "articleId"),
             inverseJoinColumns = @JoinColumn(name = "hashtagId")
     )
-    // update, insert 변경이 있을 때, hashtag 에서도 동기화
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Hashtag> hashtags = new LinkedHashSet<>();
 
-    // Article 에 연동된 Comment 는 중복을 허용하지 않는다.
-    @ToString.Exclude // 순환 참조가 생길 수 있으니 적용
-    @OrderBy("createdAt DESC") // 정렬
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) // article 테이블로부터 온 거라는 것을 명시
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
-    // 모든 JPA Entity 는 기본 생성자 필수. private X
     protected Article() {}
 
-    // metadata(id, createdAt, createdBy, modifiedAt, modifiedBy) 는 자동으로 들어가야하니 일단 제외
     private Article(UserAccount userAccount, String title, String content) {
         this.userAccount = userAccount;
         this.title = title;
         this.content = content;
     }
 
-    // private 로 생성자 막고, 팩토리 메서드로 생성자를 제공할 수 있도록 적용
     public static Article of(UserAccount userAccount, String title, String content) {
         return new Article(userAccount, title, content);
     }
@@ -79,15 +73,12 @@ public class Article extends AuditingFields{
         this.getHashtags().clear();
     }
 
-    // collection 에서 사용 시 list 에서 넣거나 중복, 정렬 등을 하면서 비교, 동등성 비교할 때 필요
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
         if (!(o instanceof Article that))
             return false;
-        // db 에 insert 전 엔티티는 아직 널이기 때문에 체크하는 코드로 변경
-//        return id.equals(article.id)
         return this.getId() != null && this.getId().equals(that.getId());
     }
 
@@ -95,4 +86,5 @@ public class Article extends AuditingFields{
     public int hashCode() {
         return Objects.hash(this.getId());
     }
+
 }
